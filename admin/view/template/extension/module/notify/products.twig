@@ -1,0 +1,75 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-left">{{ column_customer }}</td>
+        <td class="text-left">{{ column_product }}</td>  
+        <td class="text-left">{{ column_date_added }}</td>
+        <td class="text-left">{{ column_notify }}</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      {% if products %}
+      {% for product in products %}
+      <tr>
+
+        <td class="text-left">
+          <table class="table table-bordered table-hover"  style="min-width:250px;float:left;">
+              <tr>
+                <td>
+                  {% if product.customer_id > 0 %}
+                  <span class="notify_register">{{text_register}}</span>
+                  {% else %}
+                  <span class="notify_guest">{{text_unregister}}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr><td><span class="table_icons"><i class="fa fa-user"></i></span> {{product.customer_name}}</td></tr>
+              <tr><td><span class="table_icons"><i class="fa fa-envelope"></i></span> {{product.customer_email}}</td></tr>
+          </table>
+        </td>
+
+        <td class="text-left cart_product">
+          <table class="table table-bordered table-hover" style="min-width:150px;float:left;">
+            <tr>
+              <td class="text-center"><a href="{{product.product_edit}}" target="_blank">{{product.product_name}}</a>
+              </td>
+            </tr>
+            <tr>
+            
+            <td class="text-center">
+
+              {% if product.product_thumb %}
+              <a href="{{product.product_edit}}" target="_blank"><img src="{{product.product_thumb}}" alt="{{product.product_name}}" title="{{product.product_name}}" class="img-thumbnail" /></a>
+              {% endif %}
+
+            </td>
+          </tr>
+          </table>
+        </td>
+        <td class="text-left">
+          <span class="notify_date">{{ product.date_added }}</span>
+        </td>
+        <td class=>
+          {% if product.status > 0 %}
+            <span class="notify_yes">{{text_yes}}</span>
+          {% else %}
+            <span class="notify_no">{{text_no}}</span>
+          {% endif %}
+        </td>
+        <td class="text-center"><a href="{{ product.delete }}" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-warning"><i class="fa fa-trash-o"></i></a></td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td class="text-center" colspan="5">{{ text_no_results }}</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+</div>

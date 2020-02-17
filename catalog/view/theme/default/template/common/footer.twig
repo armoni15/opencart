@@ -1,0 +1,93 @@
+<footer>
+  <div class="container">
+    <div class="row">
+      {% if informations %}
+      <div class="col-sm-3">
+        <h5>{{ text_information }}</h5>
+        <ul class="list-unstyled">
+         {% for information in informations %}
+          <li><a href="{{ information.href }}">{{ information.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      <div class="col-sm-3">
+        <h5>{{ text_service }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ contact }}">{{ text_contact }}</a></li>
+          <li><a href="{{ return }}">{{ text_return }}</a></li>
+          <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <h5>{{ text_extra }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
+          <li><a href="{{ voucher }}">{{ text_voucher }}</a></li>
+          <li><a href="{{ affiliate }}">{{ text_affiliate }}</a></li>
+          <li><a href="{{ special }}">{{ text_special }}</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <h5>{{ text_account }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ account }}">{{ text_account }}</a></li>
+          <li><a href="{{ order }}">{{ text_order }}</a></li>
+          <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+          <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="gradient-divider">
+	<p>{{ powered }} - Designed by Zerotheme.com</p>
+    <p></p>
+  </div>
+</footer>
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+
+<script type="text/javascript">
+  function notify_when_available(product_id){
+    $('#notify_when_available').modal('show');
+    $('#notify_when_available #product_id').val(product_id);
+  }
+    $(document).ready(function(e){
+    $('#notify_when_available #submit').click(function(e){
+        $.ajax({
+        url: 'index.php?route=extension/module/notify_when_available/add_notify_request',
+        type: 'post',
+        dataType: 'json',
+        data: $("#notify_when_available form").serialize(),
+        beforeSend: function() {
+          $('#notify_when_available #submit').button('loading');
+        },
+        complete: function() {
+          $('#notify_when_available #submit').button('reset');
+        },
+        success: function(json) {
+          $('.alert-dismissible').remove();
+
+          if (json['error']) {
+            $('#notify_when_available form').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+          }
+
+          if (json['success']) {
+            $('#notify_when_available form').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+            $('#notify_when_available input').val('');
+            $('#notify_when_available textarea').val('');
+            setTimeout(function(e){
+            $('#notify_when_available').modal('hide');
+          },2000);
+        }
+      }
+    });
+  });
+});</script>
+
+<!--
+OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
+Please donate via PayPal to donate@opencart.com
+//-->
+
+</body></html>
